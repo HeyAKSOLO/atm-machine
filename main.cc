@@ -11,6 +11,11 @@ class Account{
 
     public:
         Account(string acc_username, string acc_pin, double acc_balance) : username(acc_username), pin(acc_pin), balance(acc_balance) {}
+        void displayInfo(){
+            cout << "Username : " << username << endl;
+            cout << "Pin : " << pin << endl;
+            cout << "Balance : " << fixed << setprecision(2) << balance << endl;
+        }
     
 };
 class SavingAccount : public Account{
@@ -31,6 +36,6 @@ class ATM{
 };
 int main(){
     SavingAccount s1("Pona Tona" , "345434");
-
+    s1.displayInfo();
     return 0;
 }
