@@ -29,31 +29,47 @@ class Account{
             return false;
         }
 
-    
-};
-
-class SavingAccount : public Account{
-    public:
-        SavingAccount(string sacc_uname, string sacc_pin) : Account(sacc_uname, sacc_pin, 0.0){}
+        
         
     };
     
-class CurrentAccount : public Account{
+class SavingAccount : public Account{
     public:
-        CurrentAccount(string cacc_uname, string cacc_pin) : Account(cacc_uname, cacc_pin, 0.0){}
+    SavingAccount(string sacc_uname, string sacc_pin) : Account(sacc_uname, sacc_pin, 0.0){}
+    
+    };
+    
+    class CurrentAccount : public Account{
+    public:
+    CurrentAccount(string cacc_uname, string cacc_pin) : Account(cacc_uname, cacc_pin, 0.0){}
 };
 
 class ATM{
     private:
     vector<SavingAccount> savingsAccounts;
     vector<CurrentAccount> currentAccounts;
-    
+    public:
+        void create_account(string uname, string pinn, int accountType){
+            if(accountType == 1){
+                SavingAccount s1(uname , pinn);
+                savingsAccounts.push_back(s1);
+            } 
+            if(accountType == 2){
+                CurrentAccount c1(uname , pinn);
+                currentAccounts.push_back(c1);
+            } 
+        }
+
+        void displayAll(){
+            for(int i = 0; i < savingsAccounts.size(); i++){
+                savingsAccounts[i].displayInfo();
+            }
+        }
 };
 
 int main(){
-    SavingAccount s1("Pona Tona" , "345434");
-    s1.deposit(100);
-    s1.withdraw(40);
-    s1.displayInfo();
+    ATM c1;
+    c1.create_account("Pona Tona", "456587", 1);
+    c1.displayAll();
     return 0;
 }
