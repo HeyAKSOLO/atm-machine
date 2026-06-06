@@ -28,18 +28,23 @@ class Account{
             }
             return false;
         }
-
+        
+        string getusername(){
+            return username;
+        }
+        string getpin(){
+            return pin;
+        }
         
         
-    };
+};
     
 class SavingAccount : public Account{
     public:
     SavingAccount(string sacc_uname, string sacc_pin) : Account(sacc_uname, sacc_pin, 0.0){}
+};
     
-    };
-    
-    class CurrentAccount : public Account{
+class CurrentAccount : public Account{
     public:
     CurrentAccount(string cacc_uname, string cacc_pin) : Account(cacc_uname, cacc_pin, 0.0){}
 };
@@ -64,6 +69,21 @@ class ATM{
             for(int i = 0; i < savingsAccounts.size(); i++){
                 savingsAccounts[i].displayInfo();
             }
+        }
+
+        bool login(string uname, string pin){
+            int i;
+            for(i = 0; i < savingsAccounts.size(); i++){
+                if(savingsAccounts[i].getusername() == uname && savingsAccounts[i].getpin() == pin){
+                    return true;
+                }
+            }
+            for(i = 0; i < currentAccounts.size(); i++){
+                if(currentAccounts[i].getusername() == uname && currentAccounts[i].getpin() == pin){
+                    return true;
+                }
+            }
+            return false;
         }
 };
 
