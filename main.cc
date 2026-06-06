@@ -5,10 +5,13 @@
 using namespace std;
 class Account{
     private:
+        vector<SavingAccount> savingsAccounts;
+        vector<CurrentAccount> currentAccounts;
+
+    protected:
         string username;
-        int pin;
+        string pin;
         double balance;
-        vector<string> accounts;
 
 };
 class SavingAccount : public Account{};
