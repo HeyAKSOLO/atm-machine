@@ -21,6 +21,14 @@ class Account{
 
         void deposit(double amount){ balance += amount; }
 
+        bool withdraw(double amount){
+            if(balance-amount >= 0){
+                balance -= amount;
+                return true;
+            }
+            return false;
+        }
+
     
 };
 
@@ -45,6 +53,7 @@ class ATM{
 int main(){
     SavingAccount s1("Pona Tona" , "345434");
     s1.deposit(100);
+    s1.withdraw(40);
     s1.displayInfo();
     return 0;
 }
