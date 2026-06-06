@@ -3,6 +3,7 @@
 #include <vector>
 #include <iomanip>
 using namespace std;
+
 class Account{
     protected:
         string username;
@@ -11,13 +12,18 @@ class Account{
 
     public:
         Account(string acc_username, string acc_pin, double acc_balance) : username(acc_username), pin(acc_pin), balance(acc_balance) {}
+
         void displayInfo(){
             cout << "Username : " << username << endl;
             cout << "Pin : " << pin << endl;
             cout << "Balance : " << fixed << setprecision(2) << balance << endl;
         }
+
+        void deposit(double amount){ balance += amount; }
+
     
 };
+
 class SavingAccount : public Account{
     public:
         SavingAccount(string sacc_uname, string sacc_pin) : Account(sacc_uname, sacc_pin, 0.0){}
@@ -28,14 +34,17 @@ class CurrentAccount : public Account{
     public:
         CurrentAccount(string cacc_uname, string cacc_pin) : Account(cacc_uname, cacc_pin, 0.0){}
 };
+
 class ATM{
     private:
     vector<SavingAccount> savingsAccounts;
     vector<CurrentAccount> currentAccounts;
     
 };
+
 int main(){
     SavingAccount s1("Pona Tona" , "345434");
+    s1.deposit(100);
     s1.displayInfo();
     return 0;
 }
