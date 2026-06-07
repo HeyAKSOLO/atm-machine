@@ -65,9 +65,13 @@ class ATM{
             } 
         }
 
-        void displayAll(){
+        void displayAll(){      // display all accounts of savings and current
             for(int i = 0; i < savingsAccounts.size(); i++){
                 savingsAccounts[i].displayInfo();
+            }
+            cout << endl;
+            for(int i = 0; i < currentAccounts.size(); i++){
+                currentAccounts[i].displayInfo();
             }
         }
 
