@@ -36,8 +36,6 @@ class Account{
         string getPin(){
             return pin;
         }
-        
-        
 };
     
 class SavingAccount : public Account{
@@ -91,20 +89,24 @@ class ATM{
             for(int i = 0; i < savingsAccounts.size(); i++){
                 if(savingsAccounts[i].getUsername() == uname && savingsAccounts[i].getPin() == pin){
                     loggedInAccount = &savingsAccounts[i];
+                    cout << "Login Successful" << endl;
                     return true;
                 }
             }
             for(int i = 0; i < currentAccounts.size(); i++){
                 if(currentAccounts[i].getUsername() == uname && currentAccounts[i].getPin() == pin){
                     loggedInAccount = &currentAccounts[i];
+                    cout << "Login Successful" << endl;
                     return true;
                 }
             }
             return false;
         }
-
+        
         void logout(){
             loggedInAccount = nullptr;
+            cout << "Logout Successful" << endl;
+            
         }
 
         bool isLoggedIn(){
@@ -127,30 +129,131 @@ class ATM{
                     cout << "Withdraw successfull" << endl;
                     return;
                 }
-                    cout << "error in Withdraw" << endl;
+                    cout << "Insufficient Balance" << endl;
                     return;
             }
             cout << "No user logged in" << endl;
         }
-
+        
         void displayLoggedInAccount(){
             if(isLoggedIn()){
                 loggedInAccount->displayInfo();
+            }
+            else{
+                cout << "No user logged in" << endl;
             }
         }
 
 };
 
 int main(){
-    ATM c1;
-    c1.create_account("Pona Tona", "456587", 1);
-    c1.create_account("Bamberbola", "989221", 1);
-    c1.create_account("Cucubamber", "687445", 2);
-    c1.login("Cucubamber", "687445");
-    c1.depositToLoggedInAccount(50000);
-    c1.withdrawFromLoggedInAccount(2000);
-    c1.displayLoggedInAccount();
-    // c1.logout();
-    c1.login("Cucubamber", "687445");
+    ATM a1;
+    int menu_choice, choice;
+    bool running = true;
+    while(running){
+        cout << "======== ATM ========" << endl;
+        cout << "1. Main Menu " << endl;
+        cout << "2. User Menu " << endl;
+        cout << "Enter here: ";
+        cin >> menu_choice;
+        cout << endl;
+
+        if(!a1.isLoggedIn()){
+            cout << endl;
+            cout << "======= ATM Main Menu =======" << endl;
+            cout << endl;
+            cout << "1. Create Account " << endl;
+            cout << "2. Login " << endl;
+            cout << "3. Exit " << endl;
+            cout << "Enter Choice: ";
+            cin >> choice;
+            cout << endl;
+    
+            switch(choice){
+                case 1:{
+                    string u_name, u_pin;
+                    int acc_type;
+                    cout << "Enter Username: ";
+                    cin.ignore();
+                    getline(cin , u_name);
+                    cout << "Enter Pin: ";
+                    cin >> u_pin;
+                    cout << endl;
+                    cout << "Account type:" << endl;
+                    cout << "   1. Savings Account" << endl;
+                    cout << "   2. Current Account" << endl;
+                    cout << "Enter : ";
+                    cin >> acc_type;
+                    a1.create_account(u_name, u_pin, acc_type);
+                    cout << endl;  
+                    break;
+                }
+                case 2:{
+                    string u_name, u_pin;
+                    cout << "Enter Username: ";
+                    cin.ignore();
+                    getline(cin , u_name);
+                    cout << "Enter Pin: ";
+                    cin >> u_pin;
+                    cout << endl;
+                    a1.login(u_name, u_pin);
+                    break;
+                }
+                case 3:{
+                    running = false;
+                    cout << "THANK YOU";
+                    break;
+                }
+                default: {cout << "Invalid choice" << endl;
+                cout << endl;}
+            }
+        }
+        else if(a1.isLoggedIn()){
+            cout << endl;
+            cout << "====== USER MENU ======" << endl;
+            cout << endl;
+            cout << "1. Deposit Money" << endl;
+            cout << "2. Withdraw Money" << endl;
+            cout << "3. Display Account Details" << endl;
+            cout << "4. Logout" << endl;
+            cout << "Enter Operation: ";
+            cin >> choice;
+            cout << endl;
+
+            switch (choice){
+            case 1:{
+                double amount;
+                cout << "Enter amount: ";
+                cin >> amount;
+                cout << endl;
+                a1.depositToLoggedInAccount(amount);
+                break;
+            }
+            case 2:{
+                double amount;
+                cout << "Enter amount: ";
+                cin >> amount;
+                cout << endl;
+                a1.withdrawFromLoggedInAccount(amount);
+                break;
+            }
+            case 3:{
+                a1.displayLoggedInAccount();
+                break;
+            }
+            case 4:{
+                a1.logout();
+                break;
+            }
+            default:{
+                cout << "Invalid Operation" << endl;
+                break;
+            }
+            }
+        }
+        else{
+            cout << "Invalid Menu Choice" << endl;
+        }
+    }
     return 0;
 }   
