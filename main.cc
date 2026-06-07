@@ -17,6 +17,7 @@ class Account{
             cout << "Username : " << username << endl;
             cout << "Pin : " << pin << endl;
             cout << "Balance : " << fixed << setprecision(2) << balance << endl;
+            cout << endl;
         }
 
         void deposit(double amount){ balance += amount; }
@@ -29,10 +30,10 @@ class Account{
             return false;
         }
         
-        string getusername(){
+        string getUsername(){
             return username;
         }
-        string getpin(){
+        string getPin(){
             return pin;
         }
         
@@ -53,47 +54,103 @@ class ATM{
     private:
     vector<SavingAccount> savingsAccounts;
     vector<CurrentAccount> currentAccounts;
+
+    Account* loggedInAccount = nullptr;
+
     public:
         void create_account(string uname, string pinn, int accountType){
             if(accountType == 1){
                 SavingAccount s1(uname , pinn);
                 savingsAccounts.push_back(s1);
+                cout << "Account creation successfull" << endl;
             } 
-            if(accountType == 2){
+            else if(accountType == 2){
                 CurrentAccount c1(uname , pinn);
                 currentAccounts.push_back(c1);
+                cout << "Account creation successfull" << endl;
             } 
+            else{
+                cout << "Invalid Account type" << endl;
+            }
         }
 
         void displayAll(){      // display all accounts of savings and current
             for(int i = 0; i < savingsAccounts.size(); i++){
                 savingsAccounts[i].displayInfo();
             }
-            cout << endl;
             for(int i = 0; i < currentAccounts.size(); i++){
                 currentAccounts[i].displayInfo();
             }
         }
 
         bool login(string uname, string pin){
-            int i;
-            for(i = 0; i < savingsAccounts.size(); i++){
-                if(savingsAccounts[i].getusername() == uname && savingsAccounts[i].getpin() == pin){
+            if(isLoggedIn()){
+                cout << "User "  << loggedInAccount->getUsername() << " already logged in" << endl;
+                return false;
+            }
+            for(int i = 0; i < savingsAccounts.size(); i++){
+                if(savingsAccounts[i].getUsername() == uname && savingsAccounts[i].getPin() == pin){
+                    loggedInAccount = &savingsAccounts[i];
                     return true;
                 }
             }
-            for(i = 0; i < currentAccounts.size(); i++){
-                if(currentAccounts[i].getusername() == uname && currentAccounts[i].getpin() == pin){
+            for(int i = 0; i < currentAccounts.size(); i++){
+                if(currentAccounts[i].getUsername() == uname && currentAccounts[i].getPin() == pin){
+                    loggedInAccount = &currentAccounts[i];
                     return true;
                 }
             }
             return false;
         }
+
+        void logout(){
+            loggedInAccount = nullptr;
+        }
+
+        bool isLoggedIn(){
+            return loggedInAccount != nullptr;
+        }
+
+        void depositToLoggedInAccount(double amount){
+            if(isLoggedIn()){
+                loggedInAccount->deposit(amount);
+                cout << "Deposit successfull" << endl;
+            }
+            else{
+                cout << "error in deposit" << endl;
+            }   
+        }
+        
+        void withdrawFromLoggedInAccount(double amount){
+            if(isLoggedIn()){
+                if(loggedInAccount->withdraw(amount)){
+                    cout << "Withdraw successfull" << endl;
+                    return;
+                }
+                    cout << "error in Withdraw" << endl;
+                    return;
+            }
+            cout << "No user logged in" << endl;
+        }
+
+        void displayLoggedInAccount(){
+            if(isLoggedIn()){
+                loggedInAccount->displayInfo();
+            }
+        }
+
 };
 
 int main(){
     ATM c1;
     c1.create_account("Pona Tona", "456587", 1);
-    c1.displayAll();
+    c1.create_account("Bamberbola", "989221", 1);
+    c1.create_account("Cucubamber", "687445", 2);
+    c1.login("Cucubamber", "687445");
+    c1.depositToLoggedInAccount(50000);
+    c1.withdrawFromLoggedInAccount(2000);
+    c1.displayLoggedInAccount();
+    // c1.logout();
+    c1.login("Cucubamber", "687445");
     return 0;
-}
+}   
