@@ -100,6 +100,7 @@ class ATM{
                     return true;
                 }
             }
+            cout << "Login Unsuccessful" << endl;
             return false;
         }
         
@@ -148,16 +149,10 @@ class ATM{
 
 int main(){
     ATM a1;
-    int menu_choice, choice;
+    int choice;
     bool running = true;
+    cout << "======== ATM ========" << endl;
     while(running){
-        cout << "======== ATM ========" << endl;
-        cout << "1. Main Menu " << endl;
-        cout << "2. User Menu " << endl;
-        cout << "Enter here: ";
-        cin >> menu_choice;
-        cout << endl;
-
         if(!a1.isLoggedIn()){
             cout << endl;
             cout << "======= ATM Main Menu =======" << endl;
